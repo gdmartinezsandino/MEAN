@@ -13,9 +13,11 @@ export class TasksService {
   async create(createTaskDto: CreateTaskDto): Promise<Task> {
     const createdTask = new this.taskModel({
       ...createTaskDto,
-      history: [{
-        changes: `Task created with status ${createTaskDto.status}`
-      }],
+      history: [
+        {
+          changes: `Task created with status ${createTaskDto.status}`,
+        },
+      ],
     });
     return createdTask.save();
   }
@@ -31,8 +33,7 @@ export class TasksService {
 
     if (filters.status) query.status = filters.status;
     if (filters.priority) query.priority = filters.priority;
-    if (filters.tags && filters.tags.length > 0)
-      query.tags = { $in: filters.tags };
+    if (filters.tags && filters.tags.length > 0) query.tags = { $in: filters.tags };
     if (filters.startDate || filters.endDate) {
       query.dueDate = {};
       if (filters.startDate) query.dueDate.$gte = new Date(filters.startDate);
@@ -51,10 +52,7 @@ export class TasksService {
     if (!existingTask) return null;
 
     // Prevent invalid status transition
-    if (
-      existingTask.status === TaskStatus.Pending &&
-      updateDto.status === TaskStatus.Completed
-    ) {
+    if (existingTask.status === TaskStatus.Pending && updateDto.status === TaskStatus.Completed) {
       throw new BadRequestException('Cannot change status directly from Pending to Completed');
     }
 

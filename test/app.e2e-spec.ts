@@ -26,10 +26,7 @@ describe('TasksController (e2e)', () => {
       tags: ['e2e', 'nestjs'],
     };
 
-    const res = await request(app.getHttpServer())
-      .post('/tasks')
-      .send(taskDto)
-      .expect(201);
+    const res = await request(app.getHttpServer()).post('/tasks').send(taskDto).expect(201);
 
     expect(res.body).toHaveProperty('_id');
     expect(res.body.title).toBe(taskDto.title);
@@ -38,18 +35,14 @@ describe('TasksController (e2e)', () => {
 
   // GET /tasks - retrieve all tasks
   it('/tasks (GET) returns tasks array', async () => {
-    const res = await request(app.getHttpServer())
-      .get('/tasks')
-      .expect(200);
+    const res = await request(app.getHttpServer()).get('/tasks').expect(200);
 
     expect(Array.isArray(res.body)).toBe(true);
   });
 
   // GET /tasks/:id - get specific task by id
   it('/tasks/:id (GET) returns a specific task', async () => {
-    const res = await request(app.getHttpServer())
-      .get(`/tasks/${createdTaskId}`)
-      .expect(200);
+    const res = await request(app.getHttpServer()).get(`/tasks/${createdTaskId}`).expect(200);
 
     expect(res.body._id).toBe(createdTaskId);
     expect(res.body.title).toBe('e2e test task');
@@ -102,16 +95,12 @@ describe('TasksController (e2e)', () => {
 
   // DELETE /tasks/:id - delete task
   it('/tasks/:id (DELETE) deletes a task', async () => {
-    await request(app.getHttpServer())
-      .delete(`/tasks/${createdTaskId}`)
-      .expect(204);
+    await request(app.getHttpServer()).delete(`/tasks/${createdTaskId}`).expect(204);
   });
 
   // DELETE /tasks/:id - 404 for non-existing id
   it('/tasks/:id (DELETE) returns 404 for non-existing task', async () => {
-    await request(app.getHttpServer())
-      .delete('/tasks/605c39f7c0a8a91a5c1b2b30')
-      .expect(404);
+    await request(app.getHttpServer()).delete('/tasks/605c39f7c0a8a91a5c1b2b30').expect(404);
   });
 
   afterAll(async () => {

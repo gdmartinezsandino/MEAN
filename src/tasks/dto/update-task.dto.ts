@@ -34,12 +34,20 @@ export class UpdateTaskDto {
   @IsEnum(TaskPriority)
   readonly priority?: TaskPriority;
 
-  @ApiPropertyOptional({ type: String, format: 'date-time', description: 'Due date in ISO 8601 format' })
+  @ApiPropertyOptional({
+    type: String,
+    format: 'date-time',
+    description: 'Due date in ISO 8601 format',
+  })
   @IsOptional()
   @IsDateString()
   readonly dueDate?: string;
 
-  @ApiPropertyOptional({ type: [String], uniqueItems: true, description: 'Tags related to the task' })
+  @ApiPropertyOptional({
+    type: [String],
+    uniqueItems: true,
+    description: 'Tags related to the task',
+  })
   @IsOptional()
   @IsArray()
   @ArrayUnique()

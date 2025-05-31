@@ -1,14 +1,14 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { 
-  ArrayUnique, 
-  IsArray, 
-  IsDateString, 
-  IsEnum, 
-  IsOptional, 
-  IsString, 
-  MaxLength, 
-  MinLength, 
-  Validate 
+import {
+  ArrayUnique,
+  IsArray,
+  IsDateString,
+  IsEnum,
+  IsOptional,
+  IsString,
+  MaxLength,
+  MinLength,
+  Validate,
 } from 'class-validator';
 
 import { IsFutureDate } from '../../common/validators/is-future-date.validator';
