@@ -24,7 +24,7 @@ export class TaskDetailComponent implements OnInit {
       this.task = tasks.find(t => t._id === id);
       if (!this.task) {
         // Redirect if no task found
-        this.router.navigate(['/tasks']);
+        this.goBack();
       }
     });
   }
