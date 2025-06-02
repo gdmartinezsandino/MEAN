@@ -1,0 +1,89 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Edit Task' : 'New Task' }}</h2>
+
+<form [formGroup]="taskForm" (ngSubmit)="save()" class="space-y-4 p-4">
+  <mat-form-field class="w-full">
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title" />
+    
+    @if (taskForm.get('title')?.hasError('required')) {
+      <mat-error>Title is required</mat-error>
+    }
+
+    @if (taskForm.get('title')?.hasError('minlength')) {
+      <mat-error>Title must be at least 3 characters</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="w-full">
+    <mat-label>Due Date</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="dueDate">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  
+    @if(taskForm.get('dueDate')?.hasError('pastDate')) {
+      <mat-error>Due date cannot be in the past</mat-error>
+    }
+  
+    @if(taskForm.get('dueDate')?.hasError('required')) {
+      <mat-error>Due date is required</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="w-full">
+    <mat-label>Status</mat-label>
+    <mat-select formControlName="status">
+      @for(status of statuses; track status) {
+        <mat-option [value]="status">{{ status }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="w-full">
+    <mat-label>Priority</mat-label>
+    <mat-select formControlName="priority">
+      @for (property of priorities; track property) {
+        <mat-option [value]="property">{{ property }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <div>
+    <label class="block mb-2 font-semibold">Tags</label>
+    <div class="flex space-x-2 flex-wrap">
+      @for (tagControl of tags.controls; track tagControl; let i = $index) {
+        <div class="flex items-center space-x-1">
+          <input
+            type="text"
+            class="border rounded px-2 py-1"
+            [formControl]="tagControl"
+            placeholder="Tag"
+          />
+          <button type="button" (click)="removeTag(i)" mat-icon-button>
+            <mat-icon>close</mat-icon>
+          </button>
+          @if(tagControl.hasError('nonUniqueTag')) {
+            <mat-error>Tag must be unique</mat-error>
+          }
+        </div>
+      }
+
+      <button
+        type="button"
+        (click)="addTag()"
+        mat-mini-fab
+        color="primary"
+        aria-label="Add tag"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="flex justify-end space-x-2 mt-4">
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="taskForm.invalid">
+      Save
+    </button>
+  </div>
+</form>

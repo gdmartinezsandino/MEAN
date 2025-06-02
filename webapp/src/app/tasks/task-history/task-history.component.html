@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Task History</h2>
+<mat-dialog-content>
+  
+  @if (history.length > 0) {
+    <mat-list *ngIf="history.length > 0">
+      @for (log of history; track log) {
+        <mat-list-item *ngFor="let entry of history">
+          <div class="flex flex-col">
+            <span class="font-semibold">{{ entry.date | date:'short' }}</span>
+            <span>{{ entry.changes }}</span>
+          </div>
+        </mat-list-item>
+      }
+    </mat-list>
+  }
+  @else {
+    <p>No history available.</p>
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

@@ -1,0 +1,115 @@
+<div class="p-4">
+  <div class="flex justify-between mb-4">
+    <input
+      type="text"
+      placeholder="Search by title..."
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="applyFilters()"
+      class="border rounded p-2"
+    />
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openAddForm()"
+    >
+      + New Task
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="flex space-x-4 mb-4">
+    <mat-form-field>
+      <mat-label>Status</mat-label>
+      <mat-select [(value)]="filterStatus" (selectionChange)="applyFilters()">
+        <mat-option value="">All</mat-option>
+        <mat-option *ngFor="let s of statuses" [value]="s">{{ s }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Priority</mat-label>
+      <mat-select [(value)]="filterPriority" (selectionChange)="applyFilters()">
+        <mat-option value="">All</mat-option>
+        <mat-option *ngFor="let p of priorities" [value]="p">{{ p }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Tags</mat-label>
+      <mat-select
+        multiple
+        [(value)]="filterTags"
+        (selectionChange)="applyFilters()"
+      >
+        <mat-option *ngFor="let t of allTags" [value]="t">{{ t }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <table class="min-w-full table-auto border-collapse border border-gray-300">
+    <thead>
+      <tr>
+        <th (click)="sortBy('title')" class="cursor-pointer">Title</th>
+        <th (click)="sortBy('status')" class="cursor-pointer">Status</th>
+        <th (click)="sortBy('priority')" class="cursor-pointer">Priority</th>
+        <th (click)="sortBy('dueDate')" class="cursor-pointer">Due Date</th>
+        <th>Tags</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of paginatedTasks">
+        <td>{{ task.title }}</td>
+        <td>{{ task.status }}</td>
+        <td>{{ task.priority }}</td>
+        <td>{{ task.dueDate | date:'shortDate' }}</td>
+        <td>
+          <span
+            *ngFor="let tag of task.tags"
+            class="inline-block bg-blue-200 rounded px-2 py-1 text-xs mr-1"
+          >
+            {{ tag }}
+          </span>
+        </td>
+        <td>
+          <button mat-icon-button color="primary" [routerLink]="['/tasks', task._id]">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" (click)="openEditForm(task)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="task._id && handlerDeleteTask(task._id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button (click)="openHistory(task)">
+            <mat-icon>history</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pagination Controls -->
+  <div class="flex justify-center mt-4 space-x-2">
+    <button
+      mat-button
+      [disabled]="currentPage === 1"
+      (click)="previousPage()"
+    >
+      Previous
+    </button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button
+      mat-button
+      [disabled]="currentPage === totalPages"
+      (click)="nextPage()"
+    >
+      Next
+    </button>
+  </div>
+</div>
