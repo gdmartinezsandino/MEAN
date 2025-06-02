@@ -8,7 +8,7 @@ import {
   FormControl,
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Task } from '../../shared/models/task.model';
+import { Task } from '../models/task.model';
 
 @Component({
   selector: 'app-task-form',
