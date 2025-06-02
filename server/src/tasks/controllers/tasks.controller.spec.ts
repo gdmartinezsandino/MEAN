@@ -23,9 +23,11 @@ describe('TasksController', () => {
     create: jest.fn().mockResolvedValue(mockTask),
     findAll: jest.fn().mockResolvedValue([mockTask]),
     findOne: jest.fn().mockResolvedValue(mockTask),
-    update: jest.fn().mockResolvedValue(mockTask),
+    update: jest.fn().mockImplementation((id, dto) =>
+      Promise.resolve({ ...mockTask, ...dto })
+    ),
     remove: jest.fn().mockResolvedValue(true),
-  };
+  };  
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

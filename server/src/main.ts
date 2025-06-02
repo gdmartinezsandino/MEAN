@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters/http-exception.filter';
+import { TasksSeeder } from './tasks/services/tasks.seeder.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,6 +23,11 @@ async function bootstrap() {
 
   // Adding filters
   app.useGlobalFilters(new AllExceptionsFilter());
+
+  const seeder = app.get(TasksSeeder);
+  console.log('[main.ts] Seeding started...');
+  await seeder.seed();
+  console.log('[main.ts] Seeding finished.');
 
   await app.listen(3000);
   console.log('Application is running on: http://localhost:3000');
