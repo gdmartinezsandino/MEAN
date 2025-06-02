@@ -9,6 +9,7 @@ import { TasksSeeder } from './tasks/services/tasks.seeder.service';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Basic setup for application
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
   app.enableCors();
 
@@ -21,13 +22,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  // Adding filters
+  // Adding global filters
   app.useGlobalFilters(new AllExceptionsFilter());
 
+  // Runing seed service to add dummy data
   const seeder = app.get(TasksSeeder);
-  console.log('[main.ts] Seeding started...');
   await seeder.seed();
-  console.log('[main.ts] Seeding finished.');
 
   await app.listen(3000);
   console.log('Application is running on: http://localhost:3000');

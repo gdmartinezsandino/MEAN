@@ -8,6 +8,7 @@ import { TasksModule } from './tasks/tasks.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    // Mongoose setup
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -20,6 +21,7 @@ import { TasksModule } from './tasks/tasks.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
+    // Apply middleware logger
     consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }
